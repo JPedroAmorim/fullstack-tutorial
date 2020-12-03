@@ -2,9 +2,15 @@ const { gql } = require("apollo-server"); // Could be an ES6 module but I'm stri
 
 const typeDefs = gql`
   type Query {
-    launches: [Launch]!
+    launches(pageSize: Int, after: String): LaunchConnection!
     launch(id: ID!): Launch
     me: User
+  }
+
+  type LaunchConnection { 
+    cursor: String!
+    hasMore: Boolean!
+    launches: [Launch]!
   }
 
   type Mutation {
@@ -12,7 +18,7 @@ const typeDefs = gql`
     cancelTrip(launchId: ID!): TripUpdateResponse!
     login(email: String): User
   }
-  
+
   type Launch {
     id: ID!
     site: String
